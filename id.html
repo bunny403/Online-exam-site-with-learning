@@ -1,0 +1,991 @@
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pariksha -Exam site</title>
+	<link rel = "icon" href = "pk.png" type = "image/x-icon">
+   
+    <!-- for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
+<!--Screen recorder style-->
+<style>
+       #start_Btn {
+            background: #009def;
+            border: 1px solid grey;
+            padding: 9px;
+            border-radius: 8px;
+            margin-top: 6px;
+	     height: 30px;
+    		width: 10%;
+		top: 60%;
+		left: 45%;
+	    position: absolute;
+        }
+    
+        video {
+            margin: auto;
+            height: 50vh;
+            display: block;
+        }
+</style>
+
+
+<!--Recorder style-->
+<style>
+#container {
+	margin: 100px ;
+	width: 130px;
+	height: 110px;
+	border: 10px #808080 solid;
+}
+#videoElement {
+	width: 110px;
+	height: 90px;
+	background-color: #ff000;
+}
+</style>
+
+
+
+
+
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    background:#00bfff;
+   
+}
+::selection{
+    color: #fff;
+    background: #4169E1;
+}
+.start_btn,
+.info_box,
+.quiz_box,
+.result_box{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px 0 rgb(100, 149, 237), 
+                0 6px 20px 0 rgb(100, 149, 237);
+}
+.info_box.activeInfo,
+.quiz_box.activeQuiz,
+.result_box.activeResult{
+    opacity: 1;
+    z-index: 5;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+}
+.start_btn button{
+    font-size: 28px;
+    font-weight: 700;
+    color: #007;
+    padding: 10px 20px;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    background: 'blue';
+    cursor: pointer;
+}
+.info_box{
+    width: 540px;
+    background: #fff;
+    border-radius: 12px;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.info_box .info-title{
+    height: 60px;
+    width: 100%;
+    border-bottom: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    border-radius: 5px 5px 0 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+.info_box .info-list{
+    padding: 10px 30px;
+}
+.info_box .info-list .info{
+    margin: 5px 0;
+    font-size: 17px;
+}
+.info_box .info-list .info span{
+    font-weight: 600;
+    color: #007bff;
+}
+.info_box .buttons{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 30px;
+    border-top: 1px solid lightgrey;
+}
+.info_box .buttons button{
+    margin: 0 5px;
+    height: 40px;
+    width: 100px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+    transition: all 0.3s ease;
+}
+.quiz_box{
+    width: 550px;
+    background: #fff;
+    border-radius: 5px;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.quiz_box header{
+    position: relative;
+    z-index: 2;
+    height: 70px;
+    padding: 0 30px;
+    background: #fff;
+    border-radius: 5px 5px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 3px 5px 1px rgb(100, 149, 237);
+}
+.quiz_box header .title{
+    font-size: 20px;
+    font-weight: 600;
+}
+.quiz_box header .timer{
+    color: #004085;
+    background: #cce5ff;
+    border: 1px solid #b8daff;
+    height: 45px;
+    padding: 0 8px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 145px;
+}
+.quiz_box header .timer .time_left_txt{
+    font-weight: 400;
+    font-size: 17px;
+    user-select: none;
+}
+.quiz_box header .timer .timer_sec{
+    font-size: 18px;
+    font-weight: 500;
+    height: 30px;
+    width: 45px;
+    color: #fff;
+    border-radius: 5px;
+    line-height: 30px;
+    text-align: center;
+    background: #343a40;
+    border: 1px solid #343a40;
+    user-select: none;
+}
+.quiz_box header .time_line{
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 3px;
+    background: #007bff;
+}
+section{
+    padding: 25px 30px 20px 30px;
+    background: #fff;
+}
+section .que_text{
+    font-size: 25px;
+    font-weight: 600;
+}
+section .option_list{
+    padding: 20px 0px;
+    display: block;   
+}
+section .option_list .option{
+    background: aliceblue;
+    border: 1px solid #84c5fe;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 17px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+section .option_list .option:last-child{
+    margin-bottom: 0px;
+}
+section .option_list .option:hover{
+    color: #004085;
+    background: #cce5ff;
+    border: 1px solid #b8daff;
+}
+
+
+
+
+
+section .option_list .option.disabled{
+    pointer-events: none;
+}
+section .option_list .option .icon{
+    height: 26px;
+    width: 26px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 13px;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    line-height: 24px;
+}
+.option_list .option .icon.tick{
+    color: #23903c;
+    border-color: #23903c;
+    background: #d4edda;
+}
+.option_list .option .icon.cross{
+    color: #a42834;
+    background: #f8d7da;
+    border-color: #a42834;
+}
+
+footer{
+    height: 60px;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid lightgrey;
+}
+footer .total_que span{
+    display: flex;
+    user-select: none;
+}
+footer .total_que span p{
+    font-weight: 500;
+    padding: 0 5px;
+}
+footer .total_que span p:first-child{
+    padding-left: 0px;
+}
+footer button{
+    height: 40px;
+    padding: 0 13px;
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: #fff;
+    border-radius: 5px;
+    background: #007bff;
+    border: 1px solid #007bff;
+    line-height: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+}
+footer button:hover{
+    background: #0263ca;
+}
+footer button.show{
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+
+
+
+
+
+.result_box{
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    padding: 25px 30px;
+    width: 450px;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.result_box .icon{
+    font-size: 100px;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+.result_box .complete_text{
+    font-size: 20px;
+    font-weight: 500;
+}
+.result_box .score_text span{
+    display: flex;
+    margin: 10px 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+.result_box .score_text span p{
+    padding: 0 4px;
+    font-weight: 600;
+}
+.result_box .buttons{
+    display: flex;
+    margin: 20px 0;
+}
+.result_box .buttons button{
+    margin: 0 10px;
+    height: 45px;
+    padding: 0 20px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #007bff;
+    transition: all 0.3s ease;
+}
+.buttons button.restart{
+    color: #fff;
+    background: #007bff;
+}
+.buttons button.restart:hover{
+    background: #0263ca;
+}
+.buttons button.quit{
+    color: #007bff;
+    background: #fff;
+}
+.buttons button.quit:hover{
+    color: #fff;
+    background: #007bff;
+}
+
+
+body {
+    width: 40%;
+  
+    background-image: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(ex.jpg);
+    background-position: center;
+    <!--background-size: cover;-->
+    <!--display: flex;-->
+    
+    align-items: center;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+
+<div id="container">
+	<video autoplay="true" id="videoElement">
+	
+	</video>
+</div>
+
+
+
+
+    <!-- start  button -->
+
+
+    <div class="start_btn"><button>Start Your Exam</button></div>
+<!-- Info Box -->
+
+    <div class="info_box">
+        <div class="info-title"><span>Imp Rules </span></div>
+        <div class="info-list">
+            <div class="info">1️⃣ 📷 Start of recording and camera is compulsary otherwise you will be considered under copy case & 
+record the entire screen.</div>
+	    <div class="info">2️⃣ 🕒. You will have only <span>15 seconds</span> per each question.</div>
+            <div class="info">3️⃣ ✅. Once you select your answer, it can't be undo and you can skip the question by using enter key ↩.</div>
+            
+            <!--<div class="info">4️⃣ ❌. You can't exit from the Exam while you're attending the exam.</div>-->
+            <div class="info">4️⃣ 🏆. You'll get result after the completion of exam.</div>
+		<div class="info">5️⃣  after the completion of exam click on stop sharing & download the recording and submit to mail.</div>
+<div class="info">6️⃣ After submission of result you can logout.</div>
+
+
+        </div>
+
+       
+	 <div class="buttons">
+            <button class="quit">Quit</button>
+            <button class="restart">Continue</button>
+        </div>
+    </div>
+    
+<!-- Quistion Box -->
+    
+    <div class="quiz_box">
+        <header>
+            <div class="title">Exam</div>
+            <div class="timer">
+                <div class="time_left_txt">Time Left</div>
+                <div class="timer_sec">15</div>
+            </div>
+            <div class="time_line"></div>
+        </header>
+        
+
+	<section>
+            <div class="que_text">
+                <!--  question from Js file -->
+            </div>
+            <div class="option_list">
+                <!-- options from js file -->
+            </div>
+	    
+        </section>
+       
+
+ <!-- footer of Quiz Box -->
+
+        <footer>
+            <div class="total_que">
+                <!--  question Count Number from Js -->
+            </div>
+            <button class="next_btn">Next Que</button>
+	    
+        </footer>
+    </div>
+    
+
+<!-- Result Box -->
+
+    <div class="result_box">
+        <div class="icon">
+            <i class="fas fa-award "></i>
+        </div>
+        <div class="complete_text">You've finished your Exam!</div>
+        <div class="score_text">
+            <!--  Score Result from JavaScript -->
+        </div>
+        <div class="buttons">
+            <button class="restart">Replay </button>
+
+<!--sending the result to the examiner-->
+	<form action="mailto:satyam.am@somaiya.edu"  method="post" enctype="text/plain"> 
+
+            <button class="quit">Submit</button>
+
+
+
+	</form>
+	<div class="btn">	    
+		<button class="quit" method="post"><a href="logout.php">LogOut</a></button>
+			
+	</div>
+	    
+
+        </div>
+    </div>
+
+
+ <!-- in this  JavaScript file  Questions and Options-->
+
+
+	
+
+
+<script>
+
+var video = document.querySelector("#videoElement");
+if (navigator.mediaDevices.getUserMedia) {
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (stream) {
+      video.srcObject = stream;
+    })
+    .catch(function (err0r) {
+      console.log("Something went wrong!");
+    });
+}
+</script>
+
+<script>
+
+
+const start_btn = document.querySelector(".start_btn button");
+const info_box = document.querySelector(".info_box");
+const exit_btn = info_box.querySelector(".buttons .quit");
+const continue_btn = info_box.querySelector(".buttons .restart");
+const quiz_box = document.querySelector(".quiz_box");
+const result_box = document.querySelector(".result_box");
+const option_list = document.querySelector(".option_list");
+const time_line = document.querySelector("header .time_line");
+const timeText = document.querySelector(".timer .time_left_txt");
+const timeCount = document.querySelector(".timer .timer_sec");
+
+	<!--if startQuiz button clicked-->
+
+
+
+
+
+
+
+start_btn.onclick = () =>{
+    info_box.classList.add("activeInfo");
+    			
+}
+
+	<!--if exitQuiz button clicked-->
+
+exit_btn.onclick = ()=>{
+    info_box.classList.remove("activeInfo"); 	
+<!--hide info box-->
+}
+
+	<!-- if continueQuiz button clicked-->
+
+continue_btn.onclick = ()=>{
+    info_box.classList.remove("activeInfo"); 			
+    quiz_box.classList.add("activeQuiz");			 
+    showQuetions(0);						 
+    queCounter(1); 							
+    startTimer(15); 						
+    startTimerLine(0); 						
+}
+
+let timeValue =  15;
+let que_count = 0;
+let que_numb = 1;
+let userScore = 0;
+let counter;
+let counterLine;
+let widthValue = 0;
+
+const restart_quiz = result_box.querySelector(".buttons .restart");
+const quit_quiz = result_box.querySelector(".buttons .quit");
+
+	<!--if restartQuiz button clicked-->
+
+restart_quiz.onclick = ()=>{
+    quiz_box.classList.add("activeQuiz"); 				
+    result_box.classList.remove("activeResult");	 		
+<!--hide result box-->
+
+    timeValue = 15; 
+    que_count = 0;
+    que_numb = 1;
+    userScore = 0;
+    widthValue = 0;
+    showQuetions(que_count);						 
+    queCounter(que_numb);
+<!--passing que_numb value to queCounter-->
+
+    clearInterval(counter); 						
+    clearInterval(counterLine);						
+    startTimer(timeValue); 
+<!--startTimer function-->
+
+    startTimerLine(widthValue); 						
+    timeText.textContent = "Time Left";
+<!--change the text of timeText to Time Left-->
+    next_btn.classList.remove("show");	
+<!--hide the next button-->
+}
+<!--if quitQuiz button clicked-->
+quit_quiz.onclick = ()=>{
+    window.location.reload(); 							
+}
+const next_btn = document.querySelector("footer .next_btn");
+const bottom_ques_counter = document.querySelector("footer .total_que");
+
+next_btn.onclick = ()=>{
+    if(que_count < questions.length - 1){ 			
+        que_count++; 							
+        que_numb++; 							
+        showQuetions(que_count); 	
+			<!--calling showQestions function-->
+        queCounter(que_numb);						 
+<!--passing que_numb value to queCounter-->
+
+        clearInterval(counter);							
+        clearInterval(counterLine); 							
+        startTimer(timeValue);						
+        startTimerLine(widthValue); 						
+        timeText.textContent = "Time Left"; 				
+        next_btn.classList.remove("show"); 					
+    }else{
+        clearInterval(counter); 
+        clearInterval(counterLine); 
+        showResult(); 
+    }
+}
+<!--getting questions and options from array-->
+
+function showQuetions(index){
+    const que_text = document.querySelector(".que_text");
+<!--creating a new span and div tag for question and option and passing the value using array index-->
+
+    let que_tag = '<span>'+ questions[index].numb + ". " + questions[index].question +'</span>';
+    let option_tag = '<div class="option"><span>'+ questions[index].options[0] +'</span></div>'
+    + '<div class="option"><span>'+ questions[index].options[1] +'</span></div>'
+    + '<div class="option"><span>'+ questions[index].options[2] +'</span></div>'
+    + '<div class="option"><span>'+ questions[index].options[3] +'</span></div>';
+    que_text.innerHTML = que_tag; 				
+<!--adding new span tag inside que_tag-->
+    option_list.innerHTML = option_tag; 				
+<!--adding new div tag inside option_tag-->
+    
+    const option = option_list.querySelectorAll(".option");
+    // set onclick attribute to all available options
+    for(i=0; i < option.length; i++){
+        option[i].setAttribute("onclick", "optionSelected(this)");
+    }
+}
+
+
+
+
+
+//if user clicked on option
+function optionSelected(answer){
+    clearInterval(counter); 			
+    clearInterval(counterLine); 			
+    let userAns = answer.textContent;			 
+<!--getting user selected option-->
+
+    let correcAns = questions[que_count].answer; 		
+    const allOptions = option_list.children.length;						 
+    
+    if(userAns == correcAns){				 
+<!--if user selected option is equal to array's correct answer-->
+
+        userScore += 1;				
+        answer.classList.add("correct"); 						
+<!--adding green color to correct selected option-->
+
+// hatadee        answer.insertAdjacentHTML("beforeend", tickIconTag); 				
+<!--adding tick icon to correct selected option-->
+//        console.log("Correct Answer");
+        console.log("Your correct answers = " + userScore);
+    }else{
+       // answer.classList.add("incorrect"); 						
+<!--adding red color to correct selected option-->
+
+ //       answer.insertAdjacentHTML("beforeend", crossIconTag); 
+<!--adding cross icon to correct selected option-->
+
+ //       console.log("Wrong Answer");
+        for(i=0; i < allOptions; i++){
+            if(option_list.children[i].textContent == correcAns){ 				
+<!--if there is an option which is matched to an array answer-->
+
+                option_list.children[i].setAttribute("class", "option correct"); 			
+<!--adding green color to matched option-->
+
+ //hatade               option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); 			
+<!--adding tick icon to matched option-->
+
+ //               console.log("Auto selected correct answer.");
+            }
+        }
+    }
+    for(i=0; i < allOptions; i++){
+        option_list.children[i].classList.add("disabled"); 	
+<!--once user select an option then disabled all options-->
+    }
+    next_btn.classList.add("show"); 					
+}
+function showResult(){					
+    info_box.classList.remove("activeInfo"); 					
+    quiz_box.classList.remove("activeQuiz"); 						
+    result_box.classList.add("activeResult"); 						
+    const scoreText = result_box.querySelector(".score_text");
+
+    if (userScore > 3){							 
+<!--creating a new span tag and passing the user score number and total question number-->
+        let scoreTag = '<span>🥇and congrats! , You got <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
+        scoreText.innerHTML = scoreTag;		
+<!--adding new span tag inside score_Text-->
+    }
+    else if(userScore > 1){ 									
+        let scoreTag = '<span>and nice , You got <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
+        scoreText.innerHTML = scoreTag;
+    }
+    else{											
+        let scoreTag = '<span>and sorry , You got only <p>'+ userScore +'</p> out of <p>'+ questions.length +'</p></span>';
+        scoreText.innerHTML = scoreTag;
+    }
+}
+function startTimer(time){
+    counter = setInterval(timer, 1000);
+    function timer(){
+        timeCount.textContent = time;							 
+        time--; 									
+        if(time < 9){ 									
+            let addZero = timeCount.textContent; 
+            timeCount.textContent = "0" + addZero; 					
+        }
+        if(time < 0){ 									
+            clearInterval(counter); 							
+            timeText.textContent = "Time Off"; 						
+            const allOptions = option_list.children.length; 				
+            let correcAns = questions[que_count].answer; 
+	
+            for(i=0; i < allOptions; i++){
+                if(option_list.children[i].textContent == correcAns){ 			
+                    option_list.children[i].setAttribute("class", "option correct"); 		
+<!--adding green color to matched option-->
+
+                    //option_list.children[i].insertAdjacentHTML("beforeend", tickIconTag); 	
+                    <!--console.log("Time Off: Auto selected correct answer.");-->
+                }
+            }
+            for(i=0; i < allOptions; i++){
+                option_list.children[i].classList.add("disabled");
+<!--once user select an option then disabled all options-->
+            }
+            next_btn.classList.add("show"); 					
+        }
+    }
+}
+function startTimerLine(time){
+    counterLine = setInterval(timer, 29);
+    function timer(){
+        time += 1; 					
+        time_line.style.width = time + "px"; 		
+        if(time > 549){ 				
+            clearInterval(counterLine); 		
+        }
+    }
+}
+function queCounter(index){
+   		<!--creating a new span tag and passing the question number and total question-->
+    let totalQueCounTag = '<span><p>'+ index +'</p> of <p>'+ questions.length +'</p> Questions</span>';
+    bottom_ques_counter.innerHTML = totalQueCounTag;  	
+<!--adding new span tag inside bottom_ques_counter-->
+}
+
+</script>
+
+
+
+
+
+
+<!--Adding questions-->    
+<script>
+let questions = [
+    {
+    numb: 1,
+    question: "What does HTML stand for?",
+    answer: "Hyper Text Markup Language",
+    options: [
+      "Hyper Text Preprocessor",
+      "Hyper Text Markup Language",
+      "Hyper Text Multiple Language",
+      "Hyper Tool Multi Language"
+    ]
+  },
+    {
+    numb: 2,
+    question: "What does CSS stand for?",
+    answer: "Cascading Style Sheet",
+    options: [
+      "Common Style Sheet",
+      "Colorful Style Sheet",
+      "Computer Style Sheet",
+      "Cascading Style Sheet"
+    ]
+  },
+    {
+    numb: 3,
+    question: "What does PHP stand for?",
+    answer: "Hypertext Preprocessor",
+    options: [
+      "Hypertext Preprocessor",
+      "Hypertext Programming",
+      "Hypertext Preprogramming",
+      "Hometext Preprocessor"
+    ]
+  },
+    {
+    numb: 4,
+    question: "What does SQL stand for?",
+    answer: "Structured Query Language",
+    options: [
+      "Stylish Question Language",
+      "Stylesheet Query Language",
+      "Statement Question Language",
+      "Structured Query Language"
+    ]
+  },
+    {
+    numb: 5,
+    question: "What does XML stand for?",
+    answer: "eXtensible Markup Language",
+    options: [
+      "eXtensible Markup Language",
+      "eXecutable Multiple Language",
+      "eXTra Multi-Program Language",
+      "eXamine Multiple Language"
+    ]
+  },
+  
+     {
+     numb: 6,
+     question: "What is the full form of AI",
+     answer: "Artificial Intelligence",
+     options: [
+       "Artificial Intelligence",
+       "Artificially Intelligence",
+       "Artificial Information",
+       "Aerospace Intelligence"
+     ]
+   },
+   
+      {
+     numb: 7,
+     question: "What is Gp",
+     answer: "Game Programming",
+     options: [
+       "Gaming Pro",
+       "Game Programming",
+       "Game Programes",
+       "Gamers Pro"
+     ]
+   },
+
+	{
+     numb: 8,
+     question: "What is RAM",
+     answer: "Random Access Memory",
+     options: [
+       "Random Allow Memory",
+       "Read Access Memory",
+       "Random Access Memory",
+       "Read Allow Memory"
+     ]
+   },   
+
+	{
+     numb: 9,
+     question: "What is HTTP",
+     answer: "Hyper Text Transfer Protocol",
+     options: [
+       "Hyper Text Transfer Protocol",
+       "Hyper Text Transmission Protocol",
+       "HTTPs",
+       "Hyperlink Text Transfer Protocol"
+     ]
+   }, 
+
+	{
+     numb: 10,
+     question: "What is ROM",
+     answer: "Read Only Memory",
+     options: [
+       "RO Memory",
+       "Read Operative Memory",
+       "Random Only Memory",
+       "Read Only Memory"
+     ]
+   }, 
+];
+
+
+</script>
+<!--Screen recorder script-->
+<script>
+
+let completeBlob = null
+let recorder = null
+let chunks = [];
+let stream = null
+async function startRecord() {
+    try {
+
+        stream = await navigator.mediaDevices.getDisplayMedia({
+            video: {
+                mediaSource: 'screen'
+            },
+        })
+        recorder = new MediaRecorder(stream);
+        recorder.ondataavailable = (e) => chunks.push(e.data);
+        recorder.start();
+        recorder.onstop = onstop
+        document.getElementById("start_Btn").style.display = "none"
+        document.getElementById("stopBtn").style.display = "unset";
+    } catch (error) {
+        window.alert(error)
+    }
+}
+
+</script>
+
+<script>
+async function stopScreen() {
+    recorder.stop()
+    document.getElementById("stopBtn").style.display = "none";
+    stream.getTracks().forEach(function (track) {
+        track.stop();
+    });
+}
+</script>
+<script>
+function onstop() {
+    completeBlob = new Blob(chunks, {
+        type: chunks[0].type
+    });
+    let downloadButton = document.getElementById('downloadbtn');
+    let video = document.getElementById('videoResult');
+    video.style.display = 'block'
+    video.src = URL.createObjectURL(completeBlob);
+    downloadButton.style.display  = 'unset'
+    downloadButton.href = URL.createObjectURL(completeBlob);
+    downloadButton.download = Date.now() + '.mp4';
+}
+</script>
+
+<!--screen recorder-->
+<div>
+        <video controls="true" style="display:none" id="videoResult" src=""></video>
+    </div>
+    <div style="text-align: center">
+
+        <button id="start_Btn"  onclick="startRecord()">Start Recording</button>
+        <button id="stopBtn" style="display:none" onclick="stopScreen()">Stop recording</button>
+        <a href="#"  id="downloadbtn" style="display:none"><button> Download Video </button></a>
+    </div>
+
+
+</body>
+</html>
+</html>
